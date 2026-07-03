@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brajá Market 🥬</title>
+
+<style>
+body{
+margin:0;
+font-family:'Arial', sans-serif;
+background:#f6f8f6;
+}
+
+/* HEADER */
+header{
+background:linear-gradient(135deg,#1b5e20,#43a047);
+color:white;
+text-align:center;
+padding:25px 15px;
+}
+
+header h1{
+margin:0;
+font-size:28px;
+}
+
+header p{
+margin-top:5px;
+opacity:0.9;
+}
+
+/* BUSCADOR */
+.search{
+text-align:center;
+margin:20px;
+}
+
+.search input{
+width:90%;
+max-width:450px;
+padding:12px;
+border-radius:10px;
+border:1px solid #ccc;
+outline:none;
+}
+
+/* PRODUCTOS */
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+padding:15px;
+max-width:1000px;
+margin:auto;
+}
+
+.card{
+background:white;
+border-radius:15px;
+padding:15px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card h3{
+margin:10px 0 5px;
+}
+
+.price{
+color:#2e7d32;
+font-weight:bold;
+font-size:18px;
+}
+
+/* BOTONES */
+button{
+background:#2e7d32;
+color:white;
+border:none;
+padding:10px;
+width:100%;
+border-radius:10px;
+cursor:pointer;
+margin-top:10px;
+font-weight:bold;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+/* CARRITO */
+.cart{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px 18px;
+border-radius:50px;
+cursor:pointer;
+font-weight:bold;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+footer{
+text-align:center;
+padding:20px;
+color:#777;
+font-size:13px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🥬 Brajá Market</h1>
+<p>Productos frescos directo a tu hogar</p>
+</header>
+
+<div class="search">
+<input type="text" id="buscar" onkeyup="filtrar()" placeholder="🔎 Buscar productos...">
+</div>
+
+<div class="container" id="productos"></div>
+
+<div class="cart" onclick="enviarWhatsApp()">
+🛒 Ver pedido
+</div>
+
+<footer>
+© 2026 Brajá Market - Todos los derechos reservados
+</footer>
+
+<script>
+
+const numeroWhatsApp = "593XXXXXXXXX"; // CAMBIA AQUÍ TU NÚMERO
+
+let carrito = [];
+
+const productos = [
+{name:"Tomate", precio:1.20},
+{name:"Lechuga", precio:0.80},
+{name:"Banano", precio:1.00},
+{name:"Manzana", precio:1.50},
+{name:"Papa", precio:0.60},
+{name:"Cebolla", precio:0.90},
+{name:"Zanahoria", precio:0.70},
+{name:"Aguacate", precio:1.80}
+];
+
+function mostrar(){
+let cont = document.getElementById("productos");
+cont.innerHTML="";
+
+productos.forEach((p,i)=>{
+cont.innerHTML += `
+<div class="card">
+<h3>${p.name}</h3>
+<p class="price">$${p.precio.toFixed(2)}</p>
+<button onclick="agregar(${i})">Agregar 🛒</button>
+</div>
+`;
+});
+}
+
+function agregar(i){
+carrito.push(productos[i]);
+alert(productos[i].name + " agregado al carrito");
+}
+
+function enviarWhatsApp(){
+
+if(carrito.length === 0){
+alert("Tu carrito está vacío");
+return;
+}
+
+let mensaje = "Hola 👋 quiero hacer este pedido:%0A%0A";
+let total = 0;
+
+carrito.forEach(p=>{
+mensaje += "• " + p.name + " - $" + p.precio + "%0A";
+total += p.precio;
+});
+
+mensaje += "%0A💰 Total: $" + total.toFixed(2);
+
+let url = "https://wa.me/" + numeroWhatsApp + "?text=" + mensaje;
+
+window.open(url, "_blank");
+}
+
+function filtrar(){
+let input = document.getElementById("buscar").value.toLowerCase();
+let cards = document.getElementsByClassName("card");
+
+for(let c of cards){
+c.style.display = c.innerText.toLowerCase().includes(input)
+? "block" : "none";
+}
+}
+
+mostrar();
+
+</script>
+
+</body>
+</html>
